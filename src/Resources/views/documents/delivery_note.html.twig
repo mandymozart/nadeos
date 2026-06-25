@@ -1,0 +1,44 @@
+{% sw_extends '@Framework/documents/delivery_note.html.twig' %}
+
+{% block payment_shipping %}
+    {{ parent() }}
+
+    {% set komDC = 0 %}
+    {% set komNS = 0 %}
+    {% set komSO = 0 %}
+
+    {% for lineItem in order.lineItems %}
+        {% if lineItem.payload.productNumber|slice(0, 2) == 'DC' %}
+            {% set komDC = komDC + lineItem.quantity %}
+        {% elseif lineItem.payload.productNumber|slice(0, 2) == 'NS' %}
+            {% set komNS = komNS + lineItem.quantity %}
+        {% else %}
+            {% set komSO = komSO + lineItem.quantity %}
+        {% endif %}
+    {% endfor %}
+
+    <br />
+    <strong>Kommissionsinfo:</strong>
+    <table>
+        {% if komDC > 0 %}
+        <tr>
+           <td><b>DC:</b></td>
+           <td>{{ komDC }}</td>
+        </tr>
+        {% endif %}
+
+        {% if komNS > 0 %}
+        <tr>
+           <td><b>NS:</b></td>
+           <td>{{ komNS }}</td>
+        </tr>
+        {% endif %}
+
+        {% if komSO > 0 %}
+        <tr>
+           <td><b>SO:</b></td>
+           <td>{{ komSO }}</td>
+        </tr>
+        {% endif %}
+    </table>
+{% endblock %}

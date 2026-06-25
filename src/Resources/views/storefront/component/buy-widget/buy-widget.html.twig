@@ -1,0 +1,22 @@
+{% sw_extends '@Storefront/storefront/component/buy-widget/buy-widget.html.twig' %}
+{% block buy_widget_ordernumber_container %}
+{{ parent() }}
+            {% if product.ean %}
+                <div class="product-detail-ean-container">
+                    {% block buy_widget_ean_label %}
+                        <span class="product-detail-ean-label">
+                            {{ 'detail.eanLabel'|trans|sw_sanitize }}
+                        </span>
+                    {% endblock %}
+
+                    {% block buy_widget_ean %}
+                        <meta itemprop="gtin13"
+                              content="{{ product.ean }}">
+                        <span class="product-detail-ean"
+                              itemprop="gtin13">
+                            {{ product.ean }}
+                        </span>
+                    {% endblock %}
+                </div>
+            {% endif %}
+        {% endblock %}

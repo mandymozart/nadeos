@@ -1,0 +1,196 @@
+{% sw_extends '@Framework/documents/base.html.twig' %}
+
+{% block document_recipient %}
+    {{ parent() }}
+
+    {% set shippingAddress = order.deliveries.first.shippingOrderAddress %}
+    {% if shippingAddress %}
+        <div class="shipping-address-header">
+            <strong>{{ 'Nadeos.document.shippingAddress'|trans|sw_sanitize(null, true) }}</strong><br>
+            {{ shippingAddress.company }}<br>
+            {{ shippingAddress.firstName }} {{ shippingAddress.lastName }}<br>
+            {{ shippingAddress.street }}<br>
+            {{ shippingAddress.zipcode }} {{ shippingAddress.city }}<br>
+            {{ shippingAddress.country.name }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block payment_shipping %}
+    {{ parent() }}
+{% endblock %}
+
+{% block document_headline %}
+    <h1 class="headline" tabindex="0">
+        {% trans with {'%invoiceNumber%': config.custom.invoiceNumber} %}document.invoiceHeadline{% endtrans %}
+    </h1>
+{% endblock %}
+
+
+{% block position_header %}
+    <thead>
+        <tr class="line-item-table-header">
+            {% block document_line_item_table_head %}
+                {% block document_line_item_table_head_position %}
+                    {% if config.displayLineItemPosition %}
+                        <th class="position" style="width: 4%;">{{ 'document.lineItems.header.position'|trans|sw_sanitize(null, true) }}</th>
+                    {% endif %}
+                {% endblock %}
+
+                {% block document_line_item_table_head_product_number %}
+                    <th class="product-number" style="width: 12%;">{{ 'document.lineItems.header.productNumber'|trans|sw_sanitize(null, true)  }}</th>
+                {% endblock %}
+
+                {% block document_line_item_table_head_label %}
+                    <th class="product-label" style="width: 52%;">{{ 'document.lineItems.header.label'|trans|sw_sanitize(null, true) }}</th>
+                {% endblock %}
+
+                {% block document_line_item_table_head_quantity %}
+                    <th class="numbers" style="width: 6%;">{{ 'document.lineItems.header.quantity'|trans|sw_sanitize(null, true) }}</th>
+                {% endblock %}
+
+                {% block document_line_item_table_head_prices %}
+                    {% if config.displayPrices %}
+                        {% set companyTaxEnabled = billingAddress.country.companyTax.enabled %}
+                        {% set displayAdditionalNoteDelivery = config.displayAdditionalNoteDelivery %}
+                        {% set isDeliveryCountry = billingAddress.country.id in config.deliveryCountries %}
+                        {% set taxStatusGross = order.price.taxStatus == constant('Shopware\\Core\\Checkout\\Cart\\Price\\Struct\\CartPrice::TAX_STATE_GROSS') %}
+                        {% set taxStatusNet = order.price.taxStatus == constant('Shopware\\Core\\Checkout\\Cart\\Price\\Struct\\CartPrice::TAX_STATE_NET') %}
+
+                        {% set displayVAT = not companyTaxEnabled or not (displayAdditionalNoteDelivery and isDeliveryCountry) %}
+
+                        {% block document_line_item_table_head_tax_rate %}
+                            <th class="numbers" style="width: 6%;">{{ 'document.lineItems.header.tax'|trans|sw_sanitize(null, true) }}</th>
+                        {% endblock %}
+                        {% block document_line_item_table_head_unit_price %}
+                            <th class="numbers incl-vat" style="width: 10%;">
+                                {{ 'document.lineItems.header.unitPrice'|trans|sw_sanitize(null, true) }}
+                                {% if displayVAT %}
+                                    {% if taxStatusGross %}
+                                        <span>{{ 'document.lineItems.inclVAT'|trans|sw_sanitize(null, true) }}</span>
+                                    {% elseif taxStatusNet %}
+                                        <span>{{ 'document.lineItems.exclVAT'|trans|sw_sanitize(null, true) }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </th>
+                        {% endblock %}
+                        {% block document_line_item_table_head_total_price %}
+                            <th class="numbers incl-vat" style="width: 10%;">
+                                {{ 'document.lineItems.header.total'|trans|sw_sanitize(null, true) }}
+                                {% if displayVAT %}
+                                    {% if taxStatusGross %}
+                                        <span>{{ 'document.lineItems.inclVAT'|trans|sw_sanitize(null, true) }}</span>
+                                    {% elseif taxStatusNet %}
+                                        <span>{{ 'document.lineItems.exclVAT'|trans|sw_sanitize(null, true) }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </th>
+                        {% endblock %}
+                    {% endif %}
+                {% endblock %}
+            {% endblock %}
+        </tr>
+    </thead>
+{% endblock %}
+
+{% block position %}
+    {% if config.displayLineItems %}
+        {% set class = '' %}
+        {% if level > 0 %}
+            {% set class = " nested level-" ~ level %}
+        {% endif %}
+
+        <tr class="line-item{{ class }}{% if first %} first{% endif %}" tabindex="0">
+            {% block document_line_item_table_rows %}
+                {% block document_line_item_table_row_position %}
+                    {% if config.displayLineItemPosition %}
+                        <td class="position"  style="width: 4%;">{% block document_line_item_table_column_position %}{{ prefix ~ position }}{% endblock %}</td>
+                    {% endif %}
+                {% endblock %}
+
+                {% block document_line_item_table_row_product_number %}
+                    {% if lineItem.payload.productNumber %}
+                        <td class="line-item-product-number"  style="width: 12%;">{% block document_line_item_table_column_product_number %}{{ lineItem.payload.productNumber }}{% endblock %}</td>
+                    {% else %}
+                        <td>{% block document_line_item_table_column_product_number_empty %}{% endblock %}</td>
+                    {% endif %}
+                {% endblock %}
+
+                {% block document_line_item_table_row_label %}
+                    <td class="line-item-breakable" style="width: 52%;">
+                    {% block document_line_item_table_column_label %}
+                        {% if level > 0 %}
+                            {% for i in 1..level %}
+                                <span class="wrapper-wrapper">
+                                    <span class="label-wrapper level-{{ i }}"></span>
+                                </span>
+                            {% endfor %}
+                        {% endif %}
+
+                        <span class="line-item-label level-{{ level }}">{{ lineItem.label|sw_sanitize(null, true) }}</span>
+                        {% if lineItem.payload.options|length >= 1 %}
+                            <br/>
+                            {% for option in lineItem.payload.options %}
+                                {{ option.group|sw_sanitize(null, true) }}: {{ option.option|sw_sanitize(null, true) }}
+                                {% if lineItem.payload.options|last != option %}
+                                    {{ " | " }}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if lineItem.payload.features|length >=1  %}
+                            <br/>
+                            {% for feature in lineItem.payload.features %}
+                                {% if feature.type == 'referencePrice' %}
+                                    {{ feature.value.purchaseUnit|sw_sanitize(null, true) }} {{ feature.value.unitName|sw_sanitize(null, true) }}
+                                    ({{ feature.value.price|currency(currencyIsoCode, languageId) }}{{ "general.star"|trans }} / {{ feature.value.referenceUnit|sw_sanitize(null, true) }} {{ feature.value.unitName|sw_sanitize(null, true) }})
+                                    {% if lineItem.payload.features|last != feature %}
+                                        {{ " | " }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endblock %}
+                    </td>
+                {% endblock %}
+
+                {% block document_line_item_table_row_quantity %}
+                    <td class="align-right"  style="width: 6%;">{% block document_line_item_table_column_quantity %}{{ lineItem.quantity }}{% endblock %}</td>
+                {% endblock %}
+
+                {% block document_line_item_table_prices %}
+                    {% if config.displayPrices %}
+                        {% block document_line_item_table_row_tax_rate %}
+                            <td class="align-right" style="width: 6%;">{% block document_line_item_table_column_tax_rate %}{% for tax in lineItem.price.taxRules %}{{ tax.taxRate }} % {% if loop.last %}{% else %}<br>{% endif %}{% endfor %}{% endblock %}</td>
+                        {% endblock %}
+                        {% block document_line_item_row_table_unit_price %}
+                            <td class="align-right" style="width: 10%;">
+                                {% block document_line_item_column_table_unit_price %}
+                                    {% set unitPrice = lineItem.unitPrice %}
+                                    {% if config.fileType == constant('Shopware\\Core\\Checkout\\Document\\Service\\HtmlRenderer::FILE_EXTENSION') %}
+                                        {% if unitPrice < 0 %}&minus;{% endif %}{{ unitPrice|abs|currency(currencyIsoCode, languageId) }}
+                                    {% else %}
+                                        {{ unitPrice|currency(currencyIsoCode, languageId) }}
+                                    {% endif %}
+
+                                {% endblock %}
+                            </td>
+                        {% endblock %}
+                        {% block document_line_item_table_row_total_price %}
+                            <td class="align-right" style="width: 10%;">
+                                {% block document_line_item_table_column_total_price %}
+                                    {% set totalPrice = lineItem.totalPrice %}
+                                    {% if config.fileType == constant('Shopware\\Core\\Checkout\\Document\\Service\\HtmlRenderer::FILE_EXTENSION') %}
+                                        {% if totalPrice < 0 %}&minus;{% endif %}{{ totalPrice|abs|currency(currencyIsoCode, languageId) }}
+                                    {% else %}
+                                        {{ totalPrice|currency(currencyIsoCode, languageId) }}
+                                    {% endif %}
+                                {% endblock %}
+                            </td>
+                        {% endblock %}
+                    {% endif %}
+                {% endblock %}
+            {% endblock %}
+        </tr>
+    {% endif %}
+{% endblock %}

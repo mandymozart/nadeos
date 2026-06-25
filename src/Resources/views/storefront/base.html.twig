@@ -1,0 +1,11 @@
+{% sw_extends '@Storefront/storefront/base.html.twig' %}
+{% block base_header_inner %}
+<div class="topbar">
+    <div class="container">
+        <span class="usp usp1">{{ "usp1"|trans|sw_sanitize }}</span>
+        <span class="usp usp2">{{ "usp2"|trans|sw_sanitize }}</span>
+        <span class="usp usp3">{{ "usp3"|trans|sw_sanitize }}</span>
+    </div>
+</div>
+{{ parent() }}
+{% endblock %}

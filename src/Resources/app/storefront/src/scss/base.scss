@@ -1,0 +1,54 @@
+.topbar{
+    background: #a8cc12;
+    width: 100%;
+    height: 24px;
+    color: #fff;
+    display: block;
+
+    .container{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .usp1{
+        text-align: left;
+    }
+
+    .usp2{
+        text-align: center;
+        flex: 1; /* Füllt den mittleren Bereich */
+    }
+
+    .usp3{
+        text-align: right;
+    }
+}
+
+.main-navigation{
+    border-bottom: 1px solid #a8cc12;;
+    
+}
+.product-detail-ean-container{
+    font-weight: 700;
+}
+h1, h2, h3 {
+    color: #a8cc12;
+}
+.white_text{
+    color: #fff !important;
+}
+.form-control {
+  height: auto;
+}
+.main-navigation-link .main-navigation-link-text {
+  border-bottom: 0px;
+}
+
+
+/* Mobile Ansicht: Topbar ausblenden */
+@media (max-width: 768px) {
+    .topbar{
+        display: none;
+    }
+}

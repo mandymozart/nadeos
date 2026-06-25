@@ -1,0 +1,6 @@
+{% sw_extends '@Framework/documents/base.html.twig' %}
+
+{% block payment_shipping %}
+    {{ parent() }}
+
+{% endblock %}
