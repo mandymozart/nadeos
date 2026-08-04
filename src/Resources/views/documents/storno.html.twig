@@ -1,27 +1,28 @@
-{% sw_extends '@Framework/documents/base.html.twig' %}
+{% sw_extends '@Framework/documents/storno.html.twig' %}
 
 {% block document_title_tag %}{% trans with {'%stornoNumber%': config.custom.stornoNumber, '%invoiceNumber%': config.custom.invoiceNumber} %}document.stornoHeadline{% endtrans %}{% endblock %}
 
-{% block document_headline %}
-    <h1 class="headline" tabindex="0">
-        {% trans with {'%stornoNumber%': config.custom.stornoNumber, '%invoiceNumber%': config.custom.invoiceNumber} %}document.stornoHeadline{% endtrans %}
-    </h1>
+{% block document_body %}
+    <div class="document-storno">
+        {{ parent() }}
+    </div>
 {% endblock %}
 
- {% block document_side_info_contents %}
-     {{ parent() }}
+{% block document_recipient %}
+    {% if not hideRecipient|default(false) %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
 
-     {% block document_side_info_date %}{% endblock %}
-
-     {% block document_side_info_cancellation_number %}
-         <tr><td>{% trans with {'%stornoNumber%': config.custom.stornoNumber} %}document.stornoNumber{% endtrans %}</td></tr>
-     {% endblock %}
-
-     {% block document_side_info_cancellation_date %}
-         <tr>
-             <td>
-                 {{ 'document.stornoDate'|trans({'%date%': config.documentDate|format_date('medium', locale=locale)})|sw_sanitize(null, true) }}
-             </td>
-         </tr>
-     {% endblock %}
- {% endblock %}
+{% block document_side_info_contents %}
+    {{ block('document_side_info_customer_number') }}
+    {{ block('document_side_info_customer_vat_id') }}
+    {{ block('document_side_info_order_number') }}
+    {{ block('document_side_info_order_date') }}
+    {% block document_side_info_cancellation_number %}
+        <div>{% trans with {'%stornoNumber%': config.custom.stornoNumber} %}document.stornoNumber{% endtrans %}</div>
+    {% endblock %}
+    {% block document_side_info_cancellation_date %}
+        <div>{{ 'document.stornoDate'|trans({'%date%': config.documentDate|format_date('medium', locale=locale)})|sw_sanitize(null, true) }}</div>
+    {% endblock %}
+{% endblock %}

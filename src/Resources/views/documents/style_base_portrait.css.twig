@@ -4,24 +4,24 @@
     {{ parent() }}
 
     @page {
-        margin-top: 260px !important;
-        margin-bottom: 100px !important;
+        margin-top: 200px !important; 
+        margin-bottom: 50px !important;
     }
 
     footer {
         bottom: 50px !important;
     }
 
- .line-item-table {
-    table-layout: fixed !important;
-    width: 100% !important;
-    border-spacing: 0 2px;
-    border-collapse: collapse;
-    padding-top: 20px;
-}
-.line-item-table th {
-    padding-bottom: 12px !important;
-}
+    .line-item-table {
+        table-layout: fixed !important;
+        width: 100% !important;
+        border-spacing: 0 2px;
+        border-collapse: collapse;
+        padding-top: 20px;
+    }
+    .line-item-table th {
+        padding-bottom: 12px !important;
+    }
 
     .line-item-table tbody tr:first-child > td {
         padding-top: 3px;
@@ -39,8 +39,13 @@
     .line-item, .sum-container, .payment-shipping-container, .document-comment-container {
         line-height: 12px;
     }
+    .company-address-small {
+        font-size: 12px;
+    }
 
-
+    header {
+        top: -115px;
+    }
     img.logo {
         position: relative !important;
         height: 90px !important;
@@ -48,18 +53,92 @@
         margin-left: 255px;
     }
     .letter-header {
-        margin-top: 90px;
-    }
-    .recipient-address-container {
-       padding-top: 20px;
-       
-    }
-    .shipping-address-header {
-        margin-top: 12px;
+        margin-top: 110px; 
     }
 
-    .payment-shipping-container, .delivery-info-additional {
+    .sender-address-container {
+        bottom: 22px; 
+        line-height: 1.1 !important;
+    }
+    .shipping-address-header,
+    .billing-address-header {
+        margin-top: 12px;
+        position: relative;
+    }
+
+    .sender-address {
+        margin-bottom: 12px;
+    }
+
+    .sum-container {
+        padding-bottom: 24px;
+    }
+    .payment-shipping-container {
+        line-height: 1.1 !important;
+        margin: 24px 0 0 0 !important;
+    }
+    .delivery-info-additional {
         line-height: 1.1 !important;
         margin: 0 !important;
     }
+
+    .page-count {
+        padding-top: 60px;
+        padding-right: 20px;
+    }
+
+    /* Delivery Note */
+    .document-delivery-note .line-item-table-header > th {
+        padding-bottom: 0px;
+    }
+    .document-delivery-note .line-item-table-header > th.incl-vat > span {
+        display: none;
+    }
+
+    /* Storno */
+    .document-storno .letter-header {
+        margin-top: 88px !important;
+    }
+    .document-storno .recipient-address-container {
+        margin-bottom: 90px;
+    }
+    .document-storno .sender-address-container {
+        bottom: 0px !important; 
+    }
+
+    /* Debug — remove the <div class="debug"> wrapper to disable all of these */
+    .debug footer,
+    .debug header,
+    .debug .letter-header,
+    .debug .sender-address-container,
+    .debug .recipient-address-container,
+    .debug .shipping-address-header,
+    .debug .billing-address-header,
+    .debug .unclear {
+        border: 1px solid red;
+    }
+
+    .debug footer::before,
+    .debug header::before,
+    .debug .letter-header::before,
+    .debug .sender-address-container::before,
+    .debug .recipient-address-container::before,
+    .debug .shipping-address-header::before,
+    .debug .billing-address-header::before,
+    .debug .unclear::before {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        font-size: 9px;
+        color: red;
+    }
+
+    .debug footer::before                      { content: 'footer'; }
+    .debug header::before                      { content: 'header'; }
+    .debug .letter-header::before              { content: 'letter-header'; }
+    .debug .sender-address-container::before   { content: 'sender-address-container'; color: green; }
+    .debug .recipient-address-container::before { content: 'recipient-address-container'; }
+    .debug .shipping-address-header::before    { content: 'shipping-address-header'; }
+    .debug .billing-address-header::before     { content: 'billing-address-header'; }
+    .debug .unclear::before                    { content: 'unclear'; }
 {% endblock %}

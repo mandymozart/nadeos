@@ -1,31 +1,30 @@
-{% sw_extends '@Framework/documents/base.html.twig' %}
+{% sw_extends '@Framework/documents/invoice.html.twig' %}
+
+{% block document_body %}
+    <div class="document-invoice">
+        {{ parent() }}
+    </div>
+{% endblock %}
 
 {% block document_recipient %}
-    {{ parent() }}
+    {% if not hideRecipient|default(false) %}
+        {{ parent() }}
 
-    {% set shippingAddress = order.deliveries.first.shippingOrderAddress %}
-    {% if shippingAddress %}
-        <div class="shipping-address-header">
-            <strong>{{ 'Nadeos.document.shippingAddress'|trans|sw_sanitize(null, true) }}</strong><br>
-            {{ shippingAddress.company }}<br>
-            {{ shippingAddress.firstName }} {{ shippingAddress.lastName }}<br>
-            {{ shippingAddress.street }}<br>
-            {{ shippingAddress.zipcode }} {{ shippingAddress.city }}<br>
-            {{ shippingAddress.country.name }}
-        </div>
+        {% set shippingAddress = order.deliveries.first.shippingOrderAddress %}
+        {% if shippingAddress %}
+            <div class="shipping-address-header">
+                <strong>{{ 'Nadeos.document.shippingAddress'|trans|sw_sanitize(null, true) }}</strong><br>
+                {% if shippingAddress.company %}
+                    {{ shippingAddress.company }}<br>
+                {% endif %}
+                {{ shippingAddress.firstName }} {{ shippingAddress.lastName }}<br>
+                {{ shippingAddress.street }}<br>
+                {{ shippingAddress.zipcode }} {{ shippingAddress.city }}<br>
+                {{ shippingAddress.country.name }}
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}
-
-{% block payment_shipping %}
-    {{ parent() }}
-{% endblock %}
-
-{% block document_headline %}
-    <h1 class="headline" tabindex="0">
-        {% trans with {'%invoiceNumber%': config.custom.invoiceNumber} %}document.invoiceHeadline{% endtrans %}
-    </h1>
-{% endblock %}
-
 
 {% block position_header %}
     <thead>

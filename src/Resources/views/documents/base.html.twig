@@ -1,72 +1,114 @@
 {% sw_extends '@Framework/documents/base.html.twig' %}
 
-{% block document_recipient %}
-    {% if config.displayCompanyAddress and config.companyAddress is not empty %}
-        {{ config.companyName }} {{ config.companyAddress }}<br><br>
-    {% endif %}
-
-    <strong>{{ 'Nadeos.document.billingAddress'|trans|sw_sanitize(null, true) }}</strong><br>
-    {% sw_include '@Framework/snippets/render.html.twig' with {
-        format: billingAddress.country.translated.addressFormat,
-        address: billingAddress
-    } %}<br/>
+{% block document_body %}
+    <div class="document-body">
+        {{ parent() }}
+    </div>
 {% endblock %}
 
-{% block document_side_info_contents %}
-    {% block document_side_info_customer_number %}
-        <tr>
-            <td>
-                {{ 'document.customerNumber'|trans({'%customerNumber%': customer.customerNumber})|sw_sanitize }}
-            </td>
-        </tr>
-    {% endblock %}
+{% block document_loop_page_letter_header %}
+    {% set hideRecipient = true %}
+    {{ parent() }}
+{% endblock %}
 
-    {% block document_side_info_customer_vat_id %}
-        {% if (customer.customer.vatIds|first and config.displayCustomerVatId) or (customer.customer.vatIds|first and billingAddress.country.companyTax.enabled and config.displayAdditionalNoteDelivery and billingAddress.country.id in config.deliveryCountries) %}
-        <tr>
-            <td>
-                {{ 'document.customerVatId'|trans({'%customerVatId%': customer.customer.vatIds|first})|sw_sanitize }}
-            </td>
-        </tr>
-        {% endif %}
-    {% endblock %}
-    {% block document_side_info_order_number %}
-        <tr>
-            <td>
-                {{ 'document.orderNumber'|trans({'%orderNumber%': order.orderNumber })|sw_sanitize }}
-            </td>
-        </tr>
-    {% endblock %}
-    {% block document_side_info_order_date %}
-        <tr>
-            <td>
-                {{ 'document.orderDate'|trans({'%orderDate%': order.orderDateTime|format_date('medium', locale=locale)})|sw_sanitize }}
-            </td>
-        </tr>
-    {% endblock %}
-    {% block document_side_info_date %}
-        <tr>
-            <td>
-                {{ 'document.date'|trans({'%date%': config.documentDate|format_date('medium', locale=locale)})|sw_sanitize }}
-            </td>
-        </tr>
-    {% endblock %}
+{% block document_shipping_cost_page_letter_header %}
+    {% set hideRecipient = true %}
+    {{ parent() }}
+{% endblock %}
 
-    {% block document_side_info_company_vat_id %}
-        {% if config.vatId and config.vatId is not empty %}
-        <tr>
-            <td>
-                {{ 'document.company.vatId'|trans({'%vatId%': config.vatId})|sw_sanitize }}
-            </td>
-        </tr>
+{% block document_recipient %}
+    <div class="unclear">
+        {% if not hideRecipient|default(false) %}
+            <strong>{{ 'Nadeos.document.billingAddress'|trans|sw_sanitize(null, true) }}</strong><br>
+            {% sw_include '@Framework/snippets/render.html.twig' with {
+                format: billingAddress.country.translated.addressFormat,
+                address: billingAddress
+            } %}<br/>
         {% endif %}
-    {% endblock %}
+    </div>
+{% endblock %}
+
+{% block document_sender_address %}
+    <div class="sender-address">
+        {% for part in addressParts %}
+            {% if loop.first and config.companyName %}
+                <div class="bold">{{ part|sw_sanitize(null, true) }}</div>
+            {% elseif config.displayCompanyAddress %}
+                <div>{{ part|sw_sanitize(null, true) }}</div>
+            {% endif %}
+        {% endfor %}
+
+        {% if config.companyPhone %}
+            {% block document_side_info_phone_number %}
+                <div>{{ 'document.phoneNumber'|trans({'%phoneNumber%': config.companyPhone})|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+        {% endif %}
+
+        {% if config.companyEmail %}
+            {% block document_side_info_email %}
+                <div>{{ config.companyEmail|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+        {% endif %}
+
+        {% if config.companyUrl %}
+            {% block document_side_company_url %}
+                <div>{{ config.companyUrl|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block document_side_info %}
+    <div class="side-info-contents">
+        {% block document_side_info_contents %}
+            {% block document_side_info_customer_number %}
+                <div>{{ 'document.customerNumber'|trans({'%customerNumber%': customer.customerNumber})|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+
+            {% block document_side_info_customer_vat_id %}
+                {% if (customer.customer.vatIds|first and config.displayCustomerVatId) or (customer.customer.vatIds|first and billingAddress.country.companyTax.enabled and config.displayAdditionalNoteDelivery and billingAddress.country.id in config.deliveryCountries) %}
+                    <div>{{ 'document.customerVatId'|trans({'%customerVatId%': customer.customer.vatIds|first})|sw_sanitize(null, true) }}</div>
+                {% endif %}
+            {% endblock %}
+
+            {% block document_side_info_order_number %}
+                <div>{{ 'document.orderNumber'|trans({'%orderNumber%': order.orderNumber})|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+
+            {% block document_side_info_order_date %}
+                <div>{{ 'document.orderDate'|trans({'%orderDate%': order.orderDateTime|format_date('medium', locale=locale)})|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+
+            {% block document_side_info_date %}
+                <div>{{ 'document.date'|trans({'%date%': config.documentDate|format_date('medium', locale=locale)})|sw_sanitize(null, true) }}</div>
+            {% endblock %}
+
+            {% block document_side_info_delivery_date %}{% endblock %}
+
+            {% block document_side_info_company_vat_id %}
+                {% if config.vatId and config.vatId is not empty %}
+                    <div>{{ 'document.company.vatId'|trans({'%vatId%': config.vatId})|sw_sanitize(null, true) }}</div>
+                {% endif %}
+            {% endblock %}
+        {% endblock %}
+    </div>
 {% endblock %}
 
 {% block shipping_address %}
-     {{ parent() }}
+    {{ parent() }}
 
-     {% block delivery_info_additional %}
+    {% block delivery_info_additional %}
         <p class="delivery-info-additional">{{ 'delivery.info.additional'|trans }}</p>
     {% endblock %}
+{% endblock %}
+
+{% block document_footer_company_name %}
+    {{ parent() }}
+    {% if config.displayCompanyAddress %}
+        <li>
+            {{ config.companyStreet }}<br>
+            {{ config.companyZipcode }} {{ config.companyCity }}<br>
+            {{ config.companyCountry.name }}
+        </li>
+    {% endif %}
 {% endblock %}

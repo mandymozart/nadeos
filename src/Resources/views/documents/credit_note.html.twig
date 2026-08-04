@@ -7,16 +7,18 @@ The blocks from the templates in the /includes folder can be overwritten directl
 
 #}
 
-{% sw_extends '@Framework/documents/base.html.twig' %}
+{% sw_extends '@Framework/documents/credit_note.html.twig' %}
 
-{% block document_title_tag %}
-    {% trans with {'%creditNoteNumber%': config.custom.creditNoteNumber} %}document.creditNoteNumber{% endtrans %}
+{% block document_body %}
+    <div class="document-credit-note">
+        {{ parent() }}
+    </div>
 {% endblock %}
 
-{% block document_headline %}
-    <h1 class="headline" tabindex="0">
-        {% trans with {'%creditNoteNumber%': config.custom.creditNoteNumber, '%invoiceNumber%': config.custom.invoiceNumber}  %}document.creditNoteHeadline{% endtrans %}
-    </h1>
+{% block document_recipient %}
+ {% if not hideRecipient|default(false) %}
+    {{ parent() }}
+ {% endif %}
 {% endblock %}
 
 {% block document_loop_shipping_costs %}
