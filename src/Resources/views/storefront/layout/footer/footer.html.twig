@@ -1,3 +1,57 @@
 {% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
+
+{#
+    EU harmonised notice on the legal guarantee of conformity (Regulation (EU) 2025/1960).
+    Shopware 6.7.14+ wires this natively into checkout + order confirmation mail
+    (see core.cart.showLegalGuaranteeNotice), but never into a persistent site-wide
+    placement. This adds the "general reminder on the website" placement the EU
+    guidelines describe, reusing the same native sw_legal_guarantee_notice(_link)
+    Twig filters and markup/classes the core checkout modal uses.
+#}
+{% block layout_footer_service_menu %}
+    {{ parent() }}
+    {% if config('core.cart.showLegalGuaranteeNotice') %}
+        <div class="container nadeos-eu-notice-footer-row text-center">
+            <button type="button"
+                    class="btn btn-link-inline"
+                    data-bs-toggle="modal"
+                    data-bs-target="#footerLegalGuaranteeNoticeModal"
+                    aria-haspopup="dialog">
+                {{ 'checkout.confirmLegalGuaranteeNoticeLink'|trans|sw_sanitize }}
+            </button>
+
+            <div class="modal modal-lg fade"
+                 id="footerLegalGuaranteeNoticeModal"
+                 tabindex="-1"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-hidden="true"
+                 aria-labelledby="footerLegalGuaranteeNoticeModal-header">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div id="footerLegalGuaranteeNoticeModal-header" class="modal-title js-pseudo-modal-template-title-element h5">
+                                {{ 'checkout.confirmLegalGuaranteeNoticeLink'|trans|sw_sanitize }}
+                            </div>
+                            <button class="btn-close close"
+                                    type="button"
+                                    data-bs-dismiss="modal"
+                                    aria-label="{{ 'global.default.close'|trans|striptags }}">
+                            </button>
+                        </div>
+                        <div class="modal-body confirm-legal-guarantee-notice">
+                            <a href="{{ context.languageId|sw_legal_guarantee_notice_link }}"
+                               target="_blank"
+                               rel="noopener">
+                                {{ context.languageId|sw_legal_guarantee_notice }}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
 {% block layout_footer_copyright %}
             {% endblock %}
