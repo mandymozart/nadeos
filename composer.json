@@ -1,6 +1,7 @@
 {
-  "name": "swag/theme-skeleton",
-  "description": "Theme skeleton plugin",
+  "name": "nadeos/theme",
+  "description": "Nadeos Theme plugin",
+  "version": "1.0.1",
   "type": "shopware-platform-plugin",
   "license": "MIT",
   "autoload": {
