@@ -54,5 +54,34 @@
     </div>
 {% endblock %}
 
+{#
+    Static payment icon row. The Stripe/Klarna plugins don't ship footer icons (Klarna only a
+    single PNG badge), so this replaces the block entirely - no parent() - to avoid a duplicate
+    Klarna logo. SVGs live in Resources/public/payment-icons (run `bin/console assets:install`).
+    Edit the list to match the payment methods actually enabled.
+#}
+{% block layout_footer_payment_logos %}
+    {% set nadeosPaymentIcons = [
+        { file: 'visa', name: 'Visa' },
+        { file: 'mastercard', name: 'Mastercard' },
+        { file: 'amex', name: 'American Express' },
+        { file: 'eps', name: 'eps-Überweisung' },
+        { file: 'klarna', name: 'Klarna' },
+    ] %}
+    <ul class="nadeos-payment-icons list-unstyled" aria-label="Zahlungsarten">
+        {% for icon in nadeosPaymentIcons %}
+            <li class="nadeos-payment-icon">
+                <img src="{{ asset('bundles/nadeos/payment-icons/' ~ icon.file ~ '.svg', 'asset') }}"
+                     alt="{{ icon.name }}"
+                     title="{{ icon.name }}"
+                     width="48"
+                     height="32"
+                     loading="lazy"
+                     draggable="false">
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
 {% block layout_footer_copyright %}
             {% endblock %}

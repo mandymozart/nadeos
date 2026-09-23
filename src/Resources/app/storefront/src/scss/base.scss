@@ -57,3 +57,17 @@ h1, h2, h3 {
 .nadeos-eu-notice-footer-row {
     margin-top: 12px;
 }
+/* Footer payment icons (Zalando-style card row) */
+.nadeos-payment-icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+}
+.nadeos-payment-icon img {
+    display: block;
+    height: 2rem;
+    width: auto;
+}
