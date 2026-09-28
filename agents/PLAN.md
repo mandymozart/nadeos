@@ -26,7 +26,7 @@ Background and what's native vs. custom: `agents/MEMORY.md` (2026-09-22/23 entri
 Nothing open on *this* task specifically. But see below — a separate, larger task was discovered
 mid-verification and needs a decision before calling the footer itself "done."
 
-## Footer redesign (mockup 2026-09-23, implemented in code 2026-09-28)
+## Footer redesign (mockup 2026-09-23, live and merged to main 2026-09-28)
 
 Mockup: `footer-entwurf-desktop.png` / `footer-entwurf-mobil.png` in the workspace root (Entwurf 3).
 Content = exactly the existing live links, nothing added (earlier rounds invented Newsletter/Social/
@@ -47,7 +47,14 @@ Content = exactly the existing live links, nothing added (earlier rounds invente
 - [x] Mobile: core accordion unchanged.
 - [x] Admin: "Widerufsformular" category set inactive (user, 2026-09-28). Its child stays active.
       Shopware's own "Widerrufs-Button anzeigen" must stay OFF, otherwise the link shows twice.
-- [ ] Deploy: sync to `web/custom/plugins/Nadeos`, `assets:install`, `theme:compile`, clear prod cache
-      (see RULES.md deploy gotchas). No local test system - first real render check is on the server.
-- [ ] Verify live: desktop 4 columns, mobile accordion + button visible, legal links only at bottom,
-      bottom row not empty.
+- [x] Deployed via branch `footer` (git pull on server + theme:compile + cache:clear), merged to
+      `main` 2026-09-28. Verified live read-only at 375 px and 1440 px: 4 columns, icons level with
+      headlines, revocation button below the accordion (mobile) / under the hotline (desktop),
+      legal links only in the bottom row, no horizontal scroll.
+- [x] Follow-ups from the live review: mockup typography (dark headlines, muted links), reply icon
+      on the revocation button, whole footer on `$gray-200` without top border, divider above the
+      bottom row.
+- [ ] Admin (user, optional): set "Service" and "Informationen" to category type "Struktur" so their
+      headlines aren't links (the category pages don't exist). Afterwards check the child SEO URLs.
+- [ ] Optional: the empty core `.footer-logos` row (no shipping logos) still adds ~32 px under the
+      revocation button on desktop.
