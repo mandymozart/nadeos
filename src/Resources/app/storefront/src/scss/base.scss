@@ -125,9 +125,20 @@ h1, h2, h3 {
     padding-top: $spacer;
     padding-bottom: $spacer;
 
+    /* mobile: icons only, no headline (not d-none: Shopware builds utilities without !important,
+       so the flex rule above would win) */
+    .nadeos-footer-headline {
+        display: none;
+    }
+
     .nadeos-payment-icons {
         justify-content: center;
     }
+}
+
+/* Core puts pb-4 on the hotline column (mobile only); it left a gap under the collapsed row */
+.footer-columns > .js-footer-column.pb-4 {
+    padding-bottom: 0;
 }
 
 @include media-breakpoint-up(md) {
@@ -141,6 +152,10 @@ h1, h2, h3 {
 
     .nadeos-footer-payment-column {
         padding-top: 0;
+
+        .nadeos-footer-headline {
+            display: flex;
+        }
 
         .nadeos-payment-icons {
             justify-content: flex-start;
