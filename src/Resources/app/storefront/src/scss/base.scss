@@ -179,15 +179,13 @@ h1, h2, h3 {
     }
 }
 
-/* One grey surface for the whole footer (like the Zalando reference), no line to the page
-   content; a light line separates the columns from the bottom row. */
+/* Columns on white, bottom row grey with a light divider; no line to the page content. */
 .footer-main {
-    background: $gray-200;
     border-top: 0;
 }
 
 .footer-bottom {
-    background: transparent;
+    background: $gray-200;
     border-top: 1px solid darken($gray-200, 8%);
 
     .footer-service-menu-link {
@@ -236,6 +234,18 @@ h1, h2, h3 {
     }
 }
 
+/* Touch devices keep :hover after a tap - keep the outline look there. */
+@media (hover: none) {
+    .nadeos-footer-revocation .btn:hover {
+        background-color: transparent;
+        color: $body-color;
+
+        .icon {
+            color: $primary;
+        }
+    }
+}
+
 .nadeos-footer-payment-column {
     padding-top: $spacer;
     padding-bottom: $spacer;
@@ -249,6 +259,21 @@ h1, h2, h3 {
     .nadeos-payment-icons {
         justify-content: center;
     }
+}
+
+/* Mobile accordion dividers: lighter than the core $border-color; the last column needs none,
+   the bottom row's divider follows directly. */
+.footer-columns > .footer-column {
+    border-bottom-color: $gray-200;
+}
+
+.footer-columns > .nadeos-footer-payment-column {
+    border-bottom: 0;
+}
+
+/* Core's shipping-logo row renders empty here (no shipping method has a logo) but keeps padding. */
+.footer-logos:not(:has(.footer-logo)) {
+    display: none;
 }
 
 /* Core puts pb-4 on the hotline column (mobile only); it left a gap under the collapsed row */
