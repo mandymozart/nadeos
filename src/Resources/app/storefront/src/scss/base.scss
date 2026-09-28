@@ -109,6 +109,87 @@ h1, h2, h3 {
     }
 }
 
+/* Typography as in the mockup (footer-entwurf-*.png): dark headlines, muted body text, links
+   without underline in the columns. Core skin makes headlines green/bold and the phone number a
+   large green block link. */
+.footer-columns {
+    .footer-column-headline,
+    .footer-column-headline a {
+        color: $body-color;
+        font-size: 1rem;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .footer-column-headline a:hover {
+        color: $primary;
+    }
+
+    .footer-link-item {
+        padding: 4px 0;
+    }
+
+    .footer-link {
+        color: $gray-800;
+        text-decoration: none;
+
+        &:hover {
+            color: $primary;
+            text-decoration: underline;
+        }
+    }
+
+    .footer-contact-hotline {
+        margin-bottom: 0;
+        color: $gray-800;
+        line-height: 2;
+
+        strong {
+            color: $body-color;
+            font-weight: 500;
+        }
+
+        a {
+            display: inline;
+            margin: 0;
+            font-size: inherit;
+            font-weight: 500;
+            color: $body-color;
+        }
+    }
+
+    #collapseFooterHotline .footer-column-content-inner {
+        padding-bottom: 0;
+    }
+
+    .footer-contact-form {
+        color: $gray-800;
+        line-height: 2;
+
+        a {
+            color: inherit;
+        }
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .footer-columns .footer-column-headline,
+    .footer-columns .footer-column-headline a {
+        font-size: 1.25rem;
+    }
+}
+
+.footer-bottom {
+    .footer-service-menu-link {
+        font-weight: 400;
+        margin: 0 $spacer-sm;
+    }
+
+    .footer-vat {
+        color: $gray-800;
+    }
+}
+
 /* Revocation link: own row element after the columns. Mobile: full-width button below the
    accordion, above the payment icons. From md: after all columns (order-md-last), i.e. under the
    hotline column. */
@@ -118,6 +199,30 @@ h1, h2, h3 {
 
     .btn {
         width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacer-sm;
+        padding: 10px 14px;
+        color: $body-color;
+        font-weight: 500;
+
+        .icon {
+            color: $primary;
+
+            > svg {
+                top: 0;
+            }
+        }
+
+        &:hover,
+        &:focus-visible {
+            color: $white;
+
+            .icon {
+                color: $white;
+            }
+        }
     }
 }
 
