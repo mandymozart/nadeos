@@ -179,7 +179,17 @@ h1, h2, h3 {
     }
 }
 
+/* One grey surface for the whole footer (like the Zalando reference), no line to the page
+   content; a light line separates the columns from the bottom row. */
+.footer-main {
+    background: $gray-200;
+    border-top: 0;
+}
+
 .footer-bottom {
+    background: transparent;
+    border-top: 1px solid darken($gray-200, 8%);
+
     .footer-service-menu-link {
         font-weight: 400;
         margin: 0 $spacer-sm;
@@ -248,7 +258,8 @@ h1, h2, h3 {
 
 @include media-breakpoint-up(md) {
     .nadeos-footer-revocation {
-        padding-top: 0;
+        padding-top: $spacer;
+        padding-bottom: $spacer-lg;
 
         .btn {
             width: auto;
