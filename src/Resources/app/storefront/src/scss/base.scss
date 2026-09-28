@@ -82,8 +82,24 @@ h1, h2, h3 {
         flex: 1;
     }
 
+    /* Same color as the core headline ($primary). Not .icon-primary: that reads the Admin
+       "brand primary text" color, which is dark here - and the "info" icon would otherwise pick
+       up Bootstrap's .icon-info blue from its own name class. */
     > .icon {
         flex-shrink: 0;
+        color: $primary;
+    }
+}
+
+/* Core adds the column's top spacing to the headline itself; move it to the wrapper so the icon
+   sits level with the text instead of centred against the padding. */
+@include media-breakpoint-up(md) {
+    .nadeos-footer-headline {
+        padding-top: $spacer-xl;
+
+        > .footer-column-headline {
+            padding-top: $spacer-sm;
+        }
     }
 }
 

@@ -23,7 +23,7 @@
 
 {% block layout_footer_navigation_hotline_headline %}
     <div class="nadeos-footer-headline">
-        {% sw_icon 'headset' style { color: 'primary' } %}
+        {% sw_icon 'headset' %}
         {{ parent() }}
     </div>
 {% endblock %}
@@ -54,7 +54,7 @@
 
     <div class="col-md-4 footer-column nadeos-footer-payment-column">
         <div class="nadeos-footer-headline">
-            {% sw_icon 'money-card' style { color: 'primary' } %}
+            {% sw_icon 'money-card' %}
             <div class="footer-column-headline footer-headline">
                 {{ 'nadeos.footer.paymentHeadline'|trans|sw_sanitize }}
             </div>
@@ -68,7 +68,7 @@
 {% block layout_footer_navigation_information_headline %}
     {% set nadeosColumnIcons = ['help', 'info'] %}
     <div class="nadeos-footer-headline">
-        {% sw_icon nadeosColumnIcons[loop.index0]|default('info') style { color: 'primary' } %}
+        {% sw_icon nadeosColumnIcons[loop.index0]|default('info') %}
         {{ parent() }}
     </div>
 {% endblock %}
