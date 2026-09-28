@@ -56,6 +56,11 @@ h1, h2, h3 {
 /* EU harmonised notice on the legal guarantee of conformity - footer reminder (Regulation (EU) 2025/1960) */
 .nadeos-eu-notice-footer-row {
     margin-top: 12px;
+
+    /* .btn-link-inline is left-aligned inside; centre the lines when it wraps on small screens */
+    .btn {
+        text-align: center;
+    }
 }
 /* Footer payment icons (Zalando-style card row) */
 .nadeos-payment-icons {
