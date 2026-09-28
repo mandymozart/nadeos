@@ -37,17 +37,16 @@ Content = exactly the existing live links, nothing added (earlier rounds invente
       position (1st = help, 2nd = info). No custom icon pack needed for now.
 - [x] Payment icons moved into their own 4th column ("Bezahlarten", snippet
       `nadeos.footer.paymentHeadline`); four columns side by side from `lg`.
-- [x] Revocation: core button `layout_footer_navigation_revocation_button` (decided 2026-09-28),
-      label overridden to "Widerrufen Sie Ihre Bestellung" (`footer.serviceRevocationRequestTextPage`,
-      `btn-outline-primary`), rendered after the hotline collapse so it stays visible on mobile.
+- [x] Revocation: link to category "Widerrufen Sie Ihre Bestellung" by ID
+      (`019edaa7d18f786eb6ce5a1fc0a2b721`, `seoUrl()`, snippet `nadeos.footer.revocationLink`,
+      `btn-outline-primary`), after the hotline collapse so it stays visible on mobile. Replaced the
+      core-button approach on 2026-09-28 (user: hard link instead of the Admin setting).
 - [x] Legal links (tos/revocation/privacy/imprint pages from Grundeinstellungen) only in the bottom
       row, removed from the "Informationen" column (decided 2026-09-28). Falls back to core behaviour
       if none of those pages match a service-menu entry.
 - [x] Mobile: core accordion unchanged.
-- [ ] **Admin (user):** Grundeinstellungen - set "Widerrufsseite (Formular)" to the page
-      "Widerrufen Sie Ihre Bestellung" and enable "Widerrufs-Button anzeigen".
-- [ ] **Admin (user):** remove the "Widerufsformular" category from the footer navigation (it was only
-      a workaround to place the link in its own group).
+- [x] Admin: "Widerufsformular" category set inactive (user, 2026-09-28). Its child stays active.
+      Shopware's own "Widerrufs-Button anzeigen" must stay OFF, otherwise the link shows twice.
 - [ ] Deploy: sync to `web/custom/plugins/Nadeos`, `assets:install`, `theme:compile`, clear prod cache
       (see RULES.md deploy gotchas). No local test system - first real render check is on the server.
 - [ ] Verify live: desktop 4 columns, mobile accordion + button visible, legal links only at bottom,

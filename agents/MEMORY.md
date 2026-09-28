@@ -71,4 +71,9 @@ target in the live/dev install), not the source of truth — that's `C:\Developm
   revocation/imprint not checkable from the storefront.
 - Local PHP is 8.3, vendor needs 8.4 - `bin/console` doesn't run locally. Twig syntax checked by
   parsing with vendor/twig directly (Shopware tags stubbed).
+- Later the same day: switched from the core revocation button to a fixed link on the category
+  "Widerrufen Sie Ihre Bestellung" (ID `019edaa7d18f786eb6ce5a1fc0a2b721`) - the core button needs
+  an Admin setting and rendered nothing live. Deliberate exception to DESIGN.md "no hardcoded nav
+  links". The page stays reachable although its parent "Widerufsformular" is inactive (checked live).
+  If the category is ever deleted/recreated, the ID in footer.html.twig must be updated.
 

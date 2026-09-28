@@ -29,24 +29,23 @@
 {% endblock %}
 
 {#
-    Revocation button (core, Shopware 6.7 - Admin > Grundeinstellungen > "Widerrufs-Button
-    anzeigen"). Core renders it inside the hotline's collapse, which hides it on mobile until the
-    column is opened. It is suppressed there and rendered again right after the collapse, so it
-    stays visible. Label comes from the snippet footer.serviceRevocationRequestTextPage.
+    Revocation link, placed after the hotline's collapse so it stays visible on mobile.
+    Deliberate exception to "no hardcoded nav links" (agents/DESIGN.md, decided 2026-09-28): links
+    the category "Widerrufen Sie Ihre Bestellung" (child of the inactive footer category
+    "Widerufsformular", which only existed to give this link its own column) by ID. seoUrl()
+    resolves the SEO URL of the current language. Shopware's own revocation button
+    (Grundeinstellungen > "Widerrufs-Button anzeigen") must stay off, or the link shows twice.
 #}
 {% block layout_footer_navigation_hotline_content %}
-    {% set nadeosRevocationOutsideCollapse = false %}
     {{ parent() }}
 
-    {% set cmsPath = 'frontend.cms.page.full' %}
-    {% set nadeosRevocationOutsideCollapse = true %}
-    {{ block('layout_footer_navigation_revocation_button') }}
-{% endblock %}
-
-{% block layout_footer_navigation_revocation_button %}
-    {% if nadeosRevocationOutsideCollapse|default(false) %}
-        {{ parent() }}
-    {% endif %}
+    <div class="footer-revocation-button mt-4">
+        <a class="btn btn-outline-primary"
+           href="{{ seoUrl('frontend.navigation.page', { navigationId: '019edaa7d18f786eb6ce5a1fc0a2b721' }) }}"
+           title="{{ 'nadeos.footer.revocationLink'|trans|striptags }}">
+            {{ 'nadeos.footer.revocationLink'|trans|sw_sanitize }}
+        </a>
+    </div>
 {% endblock %}
 
 {% block layout_footer_navigation_columns %}
