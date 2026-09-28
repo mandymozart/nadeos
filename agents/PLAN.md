@@ -58,3 +58,13 @@ Content = exactly the existing live links, nothing added (earlier rounds invente
       headlines aren't links (the category pages don't exist). Afterwards check the child SEO URLs.
 - [ ] Optional: the empty core `.footer-logos` row (no shipping logos) still adds ~32 px under the
       revocation button on desktop.
+
+## Bezugsquellen band (homepage CMS section) - 2026-09-28
+
+Mockup variant A accepted (icon circle above the heading, white button with shop icon, dark text).
+- [x] SCSS in `base.scss` scoped to the section class `nadeos-cta-band`; core `shop` icon as CSS mask
+      (data URI), no template change. Content stays in the Admin text element.
+- [x] Checked by injecting the compiled CSS into the live page in the browser only (desktop + 375 px).
+- [ ] Admin (user), right after deploy: section CSS class `white_text` -> `nadeos-cta-band`.
+      Optional: delete the empty line between heading and text in the text element.
+

@@ -315,3 +315,102 @@ h1, h2, h3 {
         width: 25%;
     }
 }
+
+/* Bezugsquellen band (homepage CMS section, Admin CSS class "nadeos-cta-band", mockup variant A).
+   Content stays in the Admin text element (h2, paragraphs, link with .btn.btn-primary); this only
+   adds the icon circle and turns the invisible green-on-green button into a white one.
+   Dark text instead of white: white on the brand green has ~1.9:1 contrast. */
+$nadeos-icon-shop: "M8 22h3v-7H8v7zm8 0v-7h-3v7h3zM3 10.584V22h3v-7c0-1.1046.8954-2 2-2h8c1.1046 0 2 .8954 2 2v7h3V10.584A4.9831 4.9831 0 0 1 19 11c-1.3627 0-2.5981-.5452-3.5-1.4293C14.5981 10.4548 13.3627 11 12 11c-1.3627 0-2.5981-.5452-3.5-1.4293C7.5981 10.4548 6.3627 11 5 11a4.9831 4.9831 0 0 1-2-.416zM1 9.0005A4.9779 4.9779 0 0 1 0 6V4.4142A3 3 0 0 1 .8787 2.293L2.2929.8787A3 3 0 0 1 4.4142 0h15.1716a3 3 0 0 1 2.1213.8787l1.4142 1.4142A3 3 0 0 1 24 4.4142V6a4.9779 4.9779 0 0 1-1 3.0005V22c0 1.1046-.8954 2-2 2H3c-1.1046 0-2-.8954-2-2V9.0005zM15 6a.5.5 0 1 1 1 0c0 1.6569 1.3431 3 3 3s3-1.3431 3-3V4.4142a1 1 0 0 0-.2929-.707L20.293 2.2928A1 1 0 0 0 19.5858 2H4.4142a1 1 0 0 0-.707.2929L2.2928 3.707A1 1 0 0 0 2 4.4142V6c0 1.6569 1.3431 3 3 3s3-1.3431 3-3a.5.5 0 0 1 1 0c0 1.6569 1.3431 3 3 3s3-1.3431 3-3z";
+/* core "shop" icon (icon/default/shop.svg) as a mask - takes its color from background-color */
+$nadeos-icon-shop-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='#{$nadeos-icon-shop}'/%3E%3C/svg%3E");
+
+.cms-section.nadeos-cta-band {
+    padding: $spacer 0;
+    color: $body-color;
+
+    .cms-element-text {
+        position: relative;
+        padding-top: 70px;
+        text-align: center;
+
+        /* white circle + green shop icon above the heading */
+        &::before,
+        &::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        &::before {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: $white;
+        }
+
+        &::after {
+            top: 14px;
+            width: 28px;
+            height: 28px;
+            background-color: $primary;
+            mask: $nadeos-icon-shop-url center / contain no-repeat;
+            -webkit-mask: $nadeos-icon-shop-url center / contain no-repeat;
+        }
+
+        h2 {
+            color: $body-color;
+            font-weight: 600;
+            margin-bottom: $spacer-sm;
+        }
+
+        p {
+            margin-bottom: 0;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: $spacer-sm;
+            margin-top: $spacer;
+            padding: 12px 22px;
+            background: $white;
+            border-color: $white;
+            color: $body-color;
+            font-weight: 600;
+
+            &::before {
+                content: "";
+                width: 18px;
+                height: 18px;
+                background-color: $primary;
+                mask: $nadeos-icon-shop-url center / contain no-repeat;
+                -webkit-mask: $nadeos-icon-shop-url center / contain no-repeat;
+            }
+
+            &:hover,
+            &:focus-visible {
+                background: $body-color;
+                border-color: $body-color;
+                color: $white;
+
+                &::before {
+                    background-color: $white;
+                }
+            }
+        }
+    }
+}
+
+@media (hover: none) {
+    .cms-section.nadeos-cta-band .cms-element-text .btn-primary:hover {
+        background: $white;
+        border-color: $white;
+        color: $body-color;
+
+        &::before {
+            background-color: $primary;
+        }
+    }
+}
