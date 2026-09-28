@@ -88,6 +88,11 @@ h1, h2, h3 {
     > .icon {
         flex-shrink: 0;
         color: $primary;
+
+        /* core shifts icon SVGs down by .25em for inline text; not needed in a flex row */
+        > svg {
+            top: 0;
+        }
     }
 }
 
