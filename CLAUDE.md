@@ -9,6 +9,8 @@ Before working, read:
   request before building it custom, and the deploy/cache gotchas on this server
 - `agents/MEMORY.md` — dated decisions, including the full story of what turned out to be native
   vs. custom for the EU-compliance work
+- `agents/DESIGN.md` — before touching any styling: reuse existing themed components/classes, don't
+  invent new CSS; footer/nav content is Admin category-builder-driven, not hardcoded in templates
 
 Workspace-level rules (DB access, browser/checkout testing) are in
 `C:\Development\nadeos\agents\RULES.md`.
