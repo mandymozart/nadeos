@@ -1,0 +1,10 @@
+{
+    "footer": {
+        "serviceRevocationRequestTextPage": "<a class=\"btn btn-outline-primary\" href=\"%url%\" title=\"Revoke your order\">Revoke your order</a>"
+    },
+    "nadeos": {
+        "footer": {
+            "paymentHeadline": "Payment methods"
+        }
+    }
+}

@@ -71,3 +71,43 @@ h1, h2, h3 {
     height: 2rem;
     width: auto;
 }
+
+/* Footer redesign (agents/PLAN.md) - icon in front of the core column headline */
+.nadeos-footer-headline {
+    display: flex;
+    align-items: center;
+    gap: $spacer-sm;
+
+    > .footer-column-headline {
+        flex: 1;
+    }
+
+    > .icon {
+        flex-shrink: 0;
+    }
+}
+
+.footer-column .footer-revocation-button .btn {
+    width: 100%;
+}
+
+.nadeos-footer-payment-column {
+    padding-bottom: $spacer;
+
+    .nadeos-payment-icons {
+        justify-content: flex-start;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .footer-column .footer-revocation-button .btn {
+        width: auto;
+    }
+}
+
+/* Four columns side by side on desktop: hotline, two Admin columns, payment */
+@include media-breakpoint-up(lg) {
+    .footer-columns > .footer-column {
+        width: 25%;
+    }
+}

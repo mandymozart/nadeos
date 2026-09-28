@@ -59,3 +59,16 @@ Full context: `C:\Development\nadeos\ISSUE-01_EU-GUARAN\` (source files from the
 `C:\Development\nadeos\web\custom\plugins\Nadeos` is a deploy target (composer path-repo symlink
 target in the live/dev install), not the source of truth — that's `C:\Development\nadeos\Nadeos`
 (this repo). Edited the wrong one once; reverted it back to untouched and moved the real work here.
+
+## 2026-09-28 – Footer redesign: decisions
+
+- Revocation button = Shopware core (`showRevocationButton` + `revocationRequestPage`), not the
+  "Widerufsformular" footer category - that category was only a workaround to give the link its own
+  group and goes away. Label kept as "Widerrufen Sie Ihre Bestellung" via snippet override.
+- Legal links only in the bottom service row. Recognised through the Grundeinstellungen CMS page IDs
+  (tos/revocation/privacy/imprint), not by name, so nothing is hardcoded. Verified read-only on
+  2026-09-28 that privacy and tos pages are configured (login page links to /widgets/cms/ ids);
+  revocation/imprint not checkable from the storefront.
+- Local PHP is 8.3, vendor needs 8.4 - `bin/console` doesn't run locally. Twig syntax checked by
+  parsing with vendor/twig directly (Shopware tags stubbed).
+

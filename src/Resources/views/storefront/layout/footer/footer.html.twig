@@ -1,6 +1,91 @@
 {% sw_extends '@Storefront/storefront/layout/footer/footer.html.twig' %}
 
 {#
+    Footer redesign (agents/PLAN.md "Footer redesign", mockup footer-entwurf-*.png).
+    Column content stays Admin-driven (footer category tree + service menu); this only adds
+    headline icons, a payment column and the layout split below. Every core block keeps parent().
+
+    Legal pages (AGB, Widerrufsrecht, Datenschutz, Impressum) show only in the bottom row, not in
+    the navigation columns. They are recognised by the CMS pages assigned under Admin >
+    Grundeinstellungen, not by name - if none of those match a service-menu entry, nothing is
+    filtered and both places render exactly as core does.
+#}
+{% block layout_footer_inner_container %}
+    {% set nadeosLegalPageIds = [
+        config('core.basicInformation.tosPage'),
+        config('core.basicInformation.revocationPage'),
+        config('core.basicInformation.privacyPage'),
+        config('core.basicInformation.imprintPage'),
+    ]|filter(id => id) %}
+    {% set nadeosSplitLegalLinks = (footer.serviceMenu ?? [])|filter(item => item.cmsPageId in nadeosLegalPageIds)|length > 0 %}
+    {{ parent() }}
+{% endblock %}
+
+{% block layout_footer_navigation_hotline_headline %}
+    <div class="nadeos-footer-headline">
+        {% sw_icon 'headset' style { color: 'primary' } %}
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{#
+    Revocation button (core, Shopware 6.7 - Admin > Grundeinstellungen > "Widerrufs-Button
+    anzeigen"). Core renders it inside the hotline's collapse, which hides it on mobile until the
+    column is opened. It is suppressed there and rendered again right after the collapse, so it
+    stays visible. Label comes from the snippet footer.serviceRevocationRequestTextPage.
+#}
+{% block layout_footer_navigation_hotline_content %}
+    {% set nadeosRevocationOutsideCollapse = false %}
+    {{ parent() }}
+
+    {% set cmsPath = 'frontend.cms.page.full' %}
+    {% set nadeosRevocationOutsideCollapse = true %}
+    {{ block('layout_footer_navigation_revocation_button') }}
+{% endblock %}
+
+{% block layout_footer_navigation_revocation_button %}
+    {% if nadeosRevocationOutsideCollapse|default(false) %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block layout_footer_navigation_columns %}
+    {{ parent() }}
+
+    <div class="col-md-4 footer-column nadeos-footer-payment-column">
+        <div class="nadeos-footer-headline">
+            {% sw_icon 'money-card' style { color: 'primary' } %}
+            <div class="footer-column-headline footer-headline">
+                {{ 'nadeos.footer.paymentHeadline'|trans|sw_sanitize }}
+            </div>
+        </div>
+        {% set nadeosPaymentLogosInColumn = true %}
+        {{ block('layout_footer_payment_logos') }}
+    </div>
+{% endblock %}
+
+{# Icons for the Admin-driven columns, by position: 1st = Service, 2nd = Informationen. #}
+{% block layout_footer_navigation_information_headline %}
+    {% set nadeosColumnIcons = ['help', 'info'] %}
+    <div class="nadeos-footer-headline">
+        {% sw_icon nadeosColumnIcons[loop.index0]|default('info') style { color: 'primary' } %}
+        {{ parent() }}
+    </div>
+{% endblock %}
+
+{% block layout_footer_navigation_information_link_item %}
+    {% if not (nadeosSplitLegalLinks and category.cmsPageId in nadeosLegalPageIds) %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block layout_footer_service_menu_item %}
+    {% if not nadeosSplitLegalLinks or serviceMenuItem.cmsPageId in nadeosLegalPageIds %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{#
     EU harmonised notice on the legal guarantee of conformity (Regulation (EU) 2025/1960).
     Shopware 6.7.14+ wires this natively into checkout (behind core.cart.showLegalGuaranteeNotice,
     a checkout-page-scoped toggle) and into the order confirmation mail, but never into a
@@ -59,8 +144,11 @@
     single PNG badge), so this replaces the block entirely - no parent() - to avoid a duplicate
     Klarna logo. SVGs live in Resources/public/payment-icons (run `bin/console assets:install`).
     Edit the list to match the payment methods actually enabled.
+    Rendered only in the payment column (see layout_footer_navigation_columns), not in the logo
+    row below the columns.
 #}
 {% block layout_footer_payment_logos %}
+    {% if nadeosPaymentLogosInColumn|default(false) %}
     {% set nadeosPaymentIcons = [
         { file: 'visa', name: 'Visa' },
         { file: 'mastercard', name: 'Mastercard' },
@@ -81,6 +169,7 @@
             </li>
         {% endfor %}
     </ul>
+    {% endif %}
 {% endblock %}
 
 {% block layout_footer_copyright %}

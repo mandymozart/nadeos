@@ -21,7 +21,34 @@ Background and what's native vs. custom: `agents/MEMORY.md` (2026-09-22/23 entri
       2026-09-22/23 entry) — nobody's checked whether it's actually customized, and it's staying
       that way for now.
 
-## Status: closed out (2026-09-28)
+## Status: EU-notice/GARAN task closed out (2026-09-28)
 
-Nothing open on this task. Next up: Vertreterportal (`NadeosExporter/agents/PLAN.md`), pending the
-user's explicit go-ahead to start.
+Nothing open on *this* task specifically. But see below — a separate, larger task was discovered
+mid-verification and needs a decision before calling the footer itself "done."
+
+## Footer redesign (mockup 2026-09-23, implemented in code 2026-09-28)
+
+Mockup: `footer-entwurf-desktop.png` / `footer-entwurf-mobil.png` in the workspace root (Entwurf 3).
+Content = exactly the existing live links, nothing added (earlier rounds invented Newsletter/Social/
+"Versand"/"Deine Vorteile" blocks - dropped, don't reintroduce without an explicit decision).
+
+- [x] Headline icons via core `sw_icon` (`headset`, `help`, `info`, `money-card`, color `primary`),
+      wrapped around the core headline blocks with `parent()` kept. Admin columns get icons by
+      position (1st = help, 2nd = info). No custom icon pack needed for now.
+- [x] Payment icons moved into their own 4th column ("Bezahlarten", snippet
+      `nadeos.footer.paymentHeadline`); four columns side by side from `lg`.
+- [x] Revocation: core button `layout_footer_navigation_revocation_button` (decided 2026-09-28),
+      label overridden to "Widerrufen Sie Ihre Bestellung" (`footer.serviceRevocationRequestTextPage`,
+      `btn-outline-primary`), rendered after the hotline collapse so it stays visible on mobile.
+- [x] Legal links (tos/revocation/privacy/imprint pages from Grundeinstellungen) only in the bottom
+      row, removed from the "Informationen" column (decided 2026-09-28). Falls back to core behaviour
+      if none of those pages match a service-menu entry.
+- [x] Mobile: core accordion unchanged.
+- [ ] **Admin (user):** Grundeinstellungen - set "Widerrufsseite (Formular)" to the page
+      "Widerrufen Sie Ihre Bestellung" and enable "Widerrufs-Button anzeigen".
+- [ ] **Admin (user):** remove the "Widerufsformular" category from the footer navigation (it was only
+      a workaround to place the link in its own group).
+- [ ] Deploy: sync to `web/custom/plugins/Nadeos`, `assets:install`, `theme:compile`, clear prod cache
+      (see RULES.md deploy gotchas). No local test system - first real render check is on the server.
+- [ ] Verify live: desktop 4 columns, mobile accordion + button visible, legal links only at bottom,
+      bottom row not empty.
