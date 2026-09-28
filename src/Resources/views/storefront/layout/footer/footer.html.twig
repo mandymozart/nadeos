@@ -29,30 +29,28 @@
 {% endblock %}
 
 {#
-    Revocation link, placed after the hotline's collapse so it stays visible on mobile.
+    Revocation link, rendered as its own row element after the columns (see
+    layout_footer_navigation_columns): outside every collapse, so always visible on mobile, below
+    the accordion; on desktop it wraps under the hotline column.
     Deliberate exception to "no hardcoded nav links" (agents/DESIGN.md, decided 2026-09-28): links
     the category "Widerrufen Sie Ihre Bestellung" (child of the inactive footer category
     "Widerufsformular", which only existed to give this link its own column) by ID. seoUrl()
     resolves the SEO URL of the current language. Shopware's own revocation button
     (Grundeinstellungen > "Widerrufs-Button anzeigen") must stay off, or the link shows twice.
 #}
-{% block layout_footer_navigation_hotline_content %}
+{% block layout_footer_navigation_columns %}
     {{ parent() }}
 
-    <div class="footer-revocation-button mt-4">
+    <div class="col-12 order-md-last nadeos-footer-revocation">
         <a class="btn btn-outline-primary"
            href="{{ seoUrl('frontend.navigation.page', { navigationId: '019edaa7d18f786eb6ce5a1fc0a2b721' }) }}"
            title="{{ 'nadeos.footer.revocationLink'|trans|striptags }}">
             {{ 'nadeos.footer.revocationLink'|trans|sw_sanitize }}
         </a>
     </div>
-{% endblock %}
-
-{% block layout_footer_navigation_columns %}
-    {{ parent() }}
 
     <div class="col-md-4 footer-column nadeos-footer-payment-column">
-        <div class="nadeos-footer-headline">
+        <div class="nadeos-footer-headline d-none d-md-flex">
             {% sw_icon 'money-card' %}
             <div class="footer-column-headline footer-headline">
                 {{ 'nadeos.footer.paymentHeadline'|trans|sw_sanitize }}

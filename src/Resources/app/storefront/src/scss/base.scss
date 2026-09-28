@@ -80,6 +80,7 @@ h1, h2, h3 {
 
     > .footer-column-headline {
         flex: 1;
+        align-items: center;
     }
 
     /* Same color as the core headline ($primary). Not .icon-primary: that reads the Admin
@@ -108,21 +109,42 @@ h1, h2, h3 {
     }
 }
 
-.footer-column .footer-revocation-button .btn {
-    width: 100%;
+/* Revocation link: own row element after the columns. Mobile: full-width button below the
+   accordion, above the payment icons. From md: after all columns (order-md-last), i.e. under the
+   hotline column. */
+.nadeos-footer-revocation {
+    padding-top: $spacer-lg;
+    padding-bottom: $spacer;
+
+    .btn {
+        width: 100%;
+    }
 }
 
 .nadeos-footer-payment-column {
+    padding-top: $spacer;
     padding-bottom: $spacer;
 
     .nadeos-payment-icons {
-        justify-content: flex-start;
+        justify-content: center;
     }
 }
 
 @include media-breakpoint-up(md) {
-    .footer-column .footer-revocation-button .btn {
-        width: auto;
+    .nadeos-footer-revocation {
+        padding-top: 0;
+
+        .btn {
+            width: auto;
+        }
+    }
+
+    .nadeos-footer-payment-column {
+        padding-top: 0;
+
+        .nadeos-payment-icons {
+            justify-content: flex-start;
+        }
     }
 }
 
