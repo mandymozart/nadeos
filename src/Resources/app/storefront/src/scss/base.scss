@@ -210,6 +210,8 @@ h1, h2, h3 {
     padding-top: $spacer-lg;
     padding-bottom: $spacer;
 
+    /* Colors and hover come from core .btn-buy (same as "In den Warenkorb"); only layout, the
+       icon and a slight rounding are ours. */
     .btn {
         width: 100%;
         display: inline-flex;
@@ -217,36 +219,14 @@ h1, h2, h3 {
         justify-content: center;
         gap: $spacer-sm;
         padding: 10px 14px;
-        color: $body-color;
-        font-weight: 500;
+        border-radius: 0.25rem;
 
         .icon {
-            color: $primary;
+            color: currentColor;
 
             > svg {
                 top: 0;
             }
-        }
-
-        &:hover,
-        &:focus-visible {
-            color: $white;
-
-            .icon {
-                color: $white;
-            }
-        }
-    }
-}
-
-/* Touch devices keep :hover after a tap - keep the outline look there. */
-@media (hover: none) {
-    .nadeos-footer-revocation .btn:hover {
-        background-color: transparent;
-        color: $body-color;
-
-        .icon {
-            color: $primary;
         }
     }
 }
